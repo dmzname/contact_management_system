@@ -1,0 +1,44 @@
+* {
+	box-sizing: border-box;
+
+	&:focus {
+		outline: vw(2) solid var(--firm);
+	}
+}
+
+body {
+	min-width: 320px;
+	margin: 0;
+	background-color: var(--bg-color);
+	font-family: 'OpenSans', sans-serif;
+	font-weight: 400;
+	font-size: vw(16);
+	line-height: 1;
+	color: var(--text-color);
+}
+
+button {
+	padding: 0;
+	border: none;
+	font-family: OpenSans, sans-serif;
+	font-weight: 600;
+	font-size: vw(14);
+	cursor: pointer;
+	background-color: transparent;
+}
+
+.btn {
+	margin: auto;
+	padding: vw(12.5) vw(20);
+	display: block;
+	width: vw(150);
+	max-width: 100%;
+	background-color: var(--firm);
+	color: var(--white);
+}
+
+.other-option {
+	position: absolute;
+	z-index: 999;
+	background-color: #191919;
+}
