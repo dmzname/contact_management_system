@@ -5,8 +5,12 @@ export default (target) => {
 	const contactsBlock = target.closest('.add-contact');
 	const select = createContactSelect();
 
-	const contactField = el('.contact-field', [
-		el('input.contact-field__input', { type: 'text', name: 'phone' }),
+	const contactField = el('.contact-field.field', [
+		el('div.contact-field__wrapper', [
+			el('input.contact-field__input', { type: 'text', name: 'phone', 'data-valid': 'phone', required: true }),
+				el('label', '+x (xxx) xxx-xx-xx'),
+				el('small')
+		]),
 		el(
 			'button.contact-field__del-btn',
 			{ type: 'button', 'data-action': 'del-contact', hidden: true },

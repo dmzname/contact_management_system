@@ -2,6 +2,7 @@ import createContactInput from './createContactInput.js';
 import {deletePopUp} from './deletePopUp.js';
 import {TabindexController} from '../../classes/TabindexController.js';
 import {selectActions} from '../custom-select/createContactSelect.js';
+import {isFormValid} from "../../utils";
 
 export const popUpTabindexController = new TabindexController(document);
 
@@ -35,7 +36,9 @@ export function popUpListener(event) {
 
 	if (event instanceof InputEvent) {
 		if (target.classList.contains('contact-field__input')) {
-			target.nextElementSibling.hidden = !target.value.length;
+			target.nextElementSibling.hidden = target.value.length;
+			target.closest('.contact-field__wrapper')
+				.nextElementSibling.hidden = !target.value.length;
 		}
 	}
 
@@ -43,10 +46,13 @@ export function popUpListener(event) {
 	if (target.dataset.action === 'save') {
 		const token = JSON.parse(localStorage.getItem('token'));
 		const form = document.forms.add;
-		const formData = {};
-		const contacts = [];
 
-		[...form.elements].forEach((input) => {
+		const formData = isFormValid(form);
+
+		// const formData = {};
+		// const contacts = [];
+
+	/*	[...form.elements].forEach((input) => {
 			if (input.nodeName === 'INPUT') {
 				if (input.classList.contains('form__field-input')) {
 					formData[input.name] = input.value;
@@ -66,7 +72,7 @@ export function popUpListener(event) {
 				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify(formData),
-		});
+		}); */
 	}
 
 	// Delete pop-up window

@@ -393,10 +393,10 @@ button {
 .form_clients .form__field {
   padding: 0 1.5625vw;
 }
-.form_clients label {
+.form_clients input + label {
   left: 1.5625vw;
 }
-.form_clients label:not(.not-required):after {
+.form_clients input[required] + label:after {
   content: "*";
   display: inline-block;
   color: var(--firm);
@@ -480,21 +480,52 @@ button {
   align-items: center;
   border: 0.0520833333vw solid var(--border-color);
 }
+.contact-field__wrapper {
+  position: relative;
+  width: 100%;
+  background-color: var(--bg-color);
+}
+.contact-field__wrapper label {
+  position: absolute;
+  z-index: 0;
+  left: 0.625vw !important;
+  top: 0.5729166667vw;
+  color: var(--text-grey);
+  letter-spacing: 0.07em;
+  font-size: 0.7291666667vw;
+}
+.contact-field__wrapper small {
+  position: absolute;
+  top: calc(100% + 0.2604166667vw);
+  left: 0;
+  color: var(--red);
+}
+.contact-field__wrapper.error {
+  border: 0.0520833333vw solid var(--red);
+}
 .contact-field__del-btn, .contact-field__input {
+  position: relative;
+  z-index: 1;
   padding: 0 0.625vw;
   height: 1.9270833333vw;
   line-height: 1.9270833333vw;
+  background-color: transparent !important;
 }
 .contact-field__input {
   width: 100%;
   margin-left: -0.0520833333vw;
   outline: none;
   border: none;
-  background-color: var(--bg-color);
   color: var(--text-color);
 }
 .contact-field__input:focus {
   box-shadow: inset 0 0 0 0.0520833333vw var(--firm);
+}
+.contact-field.error .contact-field__wrapper > input {
+  box-shadow: inset 0 0 0 0.0520833333vw var(--red) !important;
+}
+.contact-field.error label {
+  color: var(--red);
 }
 .contact-field__del-btn {
   position: relative;
@@ -512,6 +543,11 @@ button {
 }
 .contact-field__del-btn:hover svg path {
   fill: var(--firm);
+}
+.contact-field .form__field {
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
 .add-other {
@@ -591,6 +627,10 @@ button.add-other__close:after {
 }
 button.add-other__close:before {
   transform: rotate(-45deg);
+}
+
+.form_clients .form__field small {
+  padding-left: 1.5625vw;
 }
 
 .header {

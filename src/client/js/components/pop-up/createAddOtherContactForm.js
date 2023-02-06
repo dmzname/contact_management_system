@@ -14,6 +14,7 @@ export function formOtherListener([addOtherTabindexController], event) {
 
 	const contactField = target.closest('.contact-field');
 	const selectBtn = contactField.querySelector('.custom-select__button');
+	const selectInput = contactField.querySelector('.custom-select__input');
 
 	if ((target.dataset.closeOther && type !== 'keydown') || code === 'Escape') {
 		removeAddOtherContactForm(this, addOtherTabindexController);
@@ -29,6 +30,7 @@ export function formOtherListener([addOtherTabindexController], event) {
 		const contactInput = contactField.querySelector('.contact-field__input');
 
 		selectBtn.textContent = inputSocialName.value;
+		selectInput.value = inputSocialName.value;
 		contactInput.value = inputSocialLink.value;
 		contactInput.nextElementSibling.hidden = false;
 		contactInput.name = 'other';

@@ -1,24 +1,26 @@
 import { el } from 'redom';
-import { focusedElement } from '../../utils/index.js';
+import {focusedElement} from "../../utils";
 
 export function createPopUpForm() {
 	return el('form.form.form_clients', { name: 'add' }, [
-		el('div.form__field', [
+		el('div.form__field.field', [
 			el('input.form__field-input', (input) => focusedElement(input), {
 				type: 'text',
 				name: 'surname',
 				autoComplete: 'off',
+				'data-valid': 'text',
+				required: true
 			}),
 			el('label', 'Фамилия'),
 			el('small'),
 		]),
-		el('div.form__field', [
-			el('input.form__field-input', { type: 'text', name: 'name', autoComplete: 'off' }),
+		el('div.form__field.field', [
+			el('input.form__field-input', { type: 'text', name: 'name', autoComplete: 'off', 'data-valid': 'text', required: true }),
 			el('label', 'Имя'),
 			el('small'),
 		]),
-		el('div.form__field', [
-			el('input.form__field-input', { type: 'text', name: 'midname', autoComplete: 'off' }),
+		el('div.form__field.field', [
+			el('input.form__field-input', { type: 'text', name: 'midname', autoComplete: 'off', 'data-valid': 'text' }),
 			el('label.not-required', 'Отчество'),
 			el('small'),
 		]),

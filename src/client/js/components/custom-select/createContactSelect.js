@@ -1,14 +1,38 @@
 import { el } from 'redom';
 import { createAddOtherContactForm } from '../pop-up/createAddOtherContactForm.js';
-import { focusedElement } from '../../utils/index.js';
+import { focusedElement } from "../../utils";
 
 const options = {
-	phone: 'Телефон',
-	extPhone: 'Доп. телефон',
-	email: 'Email',
-	facebook: 'Facebook',
-	vk: 'Vk',
-	other: 'Другое',
+	phone: {
+		text: 'Телефон',
+		valid: 'phone',
+		label: '+x (xxx) xxx-xx-xx'
+	},
+	extPhone: {
+		text: 'Доп. телефон',
+		valid: 'phone',
+		label: '+x (xxx) xxx-xx-xx'
+	},
+	email: {
+		text:  'Email',
+		valid: 'email',
+		label: 'Введите Ваш е-mail'
+	},
+	facebook: {
+		text:  'Facebook',
+		valid: 'link',
+		label: 'Ex.: https://facebook.com'
+	},
+	vk: {
+		text:  'Vkontakte',
+		valid: 'link',
+		label: 'Ex.: https://vk.com'
+	},
+	other: {
+		text:  'Другое',
+		valid: 'link',
+		label: ''
+	},
 };
 
 // Closing select-options by click anywhere
@@ -31,9 +55,11 @@ let count = 0;
 export function selectActions(event) {
 	const { target, code, type } = event;
 	const btn = this.querySelector('.custom-select__button');
+	const selectInput = this.querySelector('.custom-select__input');
 	const itemsList = this.querySelector('.custom-select__list');
 	const items = this.querySelectorAll('.custom-select__list-item');
-	const input = this.nextSibling;
+	const input = this.nextSibling.firstElementChild;
+	const label = this.nextSibling.querySelector('label');
 
 	if (type === 'click' && target === btn) {
 		this.classList.toggle('active');
@@ -65,9 +91,12 @@ export function selectActions(event) {
 		target.dataset.value !== 'other'
 	) {
 		input.value = '';
-		input.nextElementSibling.hidden = true;
+		// input.nextElementSibling.hidden = true;
 		btn.textContent = target.textContent;
+		selectInput.value = target.textContent;
 		input.name = target.dataset.value;
+		input.dataset.valid = options[target.dataset.value].valid;
+		label.textContent = options[target.dataset.value].label;
 		this.classList.remove('active');
 		focusedElement(input);
 		count = 0;
@@ -89,10 +118,11 @@ export default () => {
 				el(
 					index === 0 ? 'li.custom-select__list-item.selected' : 'li.custom-select__list-item',
 					{ 'data-value': val, tabindex: '0' },
-					text,
+					text.text,
 				),
 			),
 		]),
+		el('input.custom-select__input', {type: 'hidden', name: 'select', value: 'Телефон' })
 	]);
 
 	select.addEventListener('click', selectActions);

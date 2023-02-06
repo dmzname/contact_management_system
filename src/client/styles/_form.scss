@@ -94,10 +94,11 @@
 			padding: 0 vw(30);
 		}
 
-		label {
-			left: vw(30);
-
-			&:not(.not-required) {
+		input {
+			& + label {
+				left: vw(30);
+			}
+			&[required] + label {
 				&:after {
 					content: '*';
 					display: inline-block;
@@ -195,11 +196,40 @@
 	align-items: center;
 	border: vw(1) solid var(--border-color);
 
+	&__wrapper {
+		position: relative;
+		width: 100%;
+		background-color: var(--bg-color);
+
+		label {
+			position: absolute;
+			z-index: 0;
+			left: vw(12) !important;
+			top: vw(11);
+			color: var(--text-grey);
+			letter-spacing: .07em;
+			font-size: vw(14);
+		}
+
+		small {
+			position: absolute;
+			top: calc(100% + vw(5));
+			left: 0;
+			color: var(--red);
+		}
+		&.error {
+			border: vw(1) solid var(--red);
+		}
+	}
+
 	&__del-btn,
 	&__input {
+		position: relative;
+		z-index: 1;
 		padding: 0 vw(12);
 		height: vw(37);
 		line-height: vw(37);
+		background-color: transparent !important;
 	}
 
 	&__input {
@@ -207,11 +237,19 @@
 		margin-left: vw(-1);
 		outline: none;
 		border: none;
-		background-color: var(--bg-color);
 		color: var(--text-color);
 
 		&:focus {
 			box-shadow: inset 0 0 0 vw(1) var(--firm);
+		}
+	}
+
+	&.error {
+		.contact-field__wrapper > input {
+			box-shadow: inset 0 0 0 vw(1) var(--red) !important;
+		}
+		label {
+			color: var(--red);
 		}
 	}
 
@@ -236,6 +274,11 @@
 				fill: var(--firm);
 			}
 		}
+	}
+	.form__field {
+		padding: 0;
+		margin: 0;
+		width: 100%;
 	}
 }
 
@@ -305,4 +348,8 @@
 
 button.add-other__close {
 	@include closeBtn;
+}
+
+.form_clients .form__field small {
+	padding-left: vw(30);
 }
