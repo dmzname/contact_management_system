@@ -16,7 +16,7 @@ export const addClient = async (req, res) => {
 		res.json(client);
 	} catch (err) {
 		console.log(err);
-		res.status(500).json({ message: 'Failed to create client.' });
+		res.status(500).json({ message: 'Ошибка при создании клиента. Попробуйте еще раз позже.' });
 	}
 };
 
@@ -26,6 +26,6 @@ export const getAllClients = async (req, res) => {
 		res.status(201).json(data);
 	} catch (err) {
 		console.log(err);
-		res.status(500).json({ message: 'Server error.' });
+		res.status(500).json({ message: 'Ошибка сервера.' });
 	}
 };

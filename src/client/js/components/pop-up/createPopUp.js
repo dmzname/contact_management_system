@@ -37,6 +37,8 @@ export function createPopUp(event) {
 			el('h3.pop-up__title', checkTitle),
 			form,
 			el('button.pop-up__close', { 'data-close': '', type: 'button' }),
+			el('.pop-up__isLoading', {hidden: true}),
+			el('.pop-up__isError', {hidden: true})
 		]),
 	);
 

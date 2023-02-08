@@ -1,3 +1,5 @@
+import {getTokenFromLS} from "../utils";
+
 async function userAuthorization(formData, url) {
 	const response = await fetch(`${url}`, {
 		method: 'POST',
@@ -20,7 +22,7 @@ async function userAuthorization(formData, url) {
 }
 
 async function userLogout() {
-	const token = JSON.parse(localStorage.getItem('token'));
+	const token = getTokenFromLS();
 	const response = await fetch('/logout', {
 		method: 'GET',
 		headers: {

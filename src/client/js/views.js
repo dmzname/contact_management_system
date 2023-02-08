@@ -12,6 +12,7 @@ import {
 	createSignupForm,
 	createTitle
 } from "./components";
+import {getInputsNode} from "./utils/getInputsNode";
 
 document.addEventListener('DOMContentLoaded', () => {
 	const token = JSON.parse(localStorage.getItem('token'));
@@ -47,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			const errorMessage = form.querySelector('.error-message');
 			form.addEventListener('submit', async (e) => {
 				e.preventDefault();
-				const formData = isFormValid(e.target);
+				const formData = isFormValid(getInputsNode(form));
 				if (formData) {
 					try {
 						const userData = await userAuthorization(formData, `/${e.target.name}`);

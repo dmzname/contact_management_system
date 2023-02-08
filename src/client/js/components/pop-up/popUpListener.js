@@ -2,13 +2,16 @@ import createContactInput from './createContactInput.js';
 import {deletePopUp} from './deletePopUp.js';
 import {TabindexController} from '../../classes/TabindexController.js';
 import {selectActions} from '../custom-select/createContactSelect.js';
-import {isFormValid} from "../../utils";
+import {isFormValid, getInputsNode} from "../../utils";
+import {isShowPlaceholder} from "./createAddOtherContactForm";
+import {saveClientApi} from "../../api/saveClientApi";
+import {createClientItem} from "../contentTable/createClientItem";
 
 export const popUpTabindexController = new TabindexController(document);
 
 let countContacts = 0;
 
-export function popUpListener(event) {
+export async function popUpListener(event) {
 	event.preventDefault();
 	const {target} = event;
 
@@ -25,11 +28,13 @@ export function popUpListener(event) {
 
 	// Delete client contacts field
 	if (target.dataset.action === 'del-contact') {
-		const select = target.closest('.contact-field').querySelector('.custom-select');
+		const contactField = target.closest('.contact-field');
+		const select = contactField.querySelector('.custom-select');
 		--countContacts;
 		addContactBtn.disabled = false;
-		target.closest('.contact-field').remove();
+		contactField.remove();
 
+		contactField.removeEventListener('input', isShowPlaceholder);
 		select.removeEventListener('click', selectActions);
 		select.removeEventListener('keydown', selectActions);
 	}
@@ -44,35 +49,32 @@ export function popUpListener(event) {
 
 	// Save form data
 	if (target.dataset.action === 'save') {
-		const token = JSON.parse(localStorage.getItem('token'));
+		const tBody = document.querySelector('.clients-list__body');
 		const form = document.forms.add;
+		const isLoading = this.querySelector('.pop-up__isLoading')
+		const isError = this.querySelector('.pop-up__isError')
+		const formData = isFormValid(getInputsNode(form));
 
-		const formData = isFormValid(form);
-
-		// const formData = {};
-		// const contacts = [];
-
-	/*	[...form.elements].forEach((input) => {
-			if (input.nodeName === 'INPUT') {
-				if (input.classList.contains('form__field-input')) {
-					formData[input.name] = input.value;
-				} else {
-					const socialName = input.previousSibling.querySelector('.custom-select__button').textContent;
-					contacts.push({type: input.name, socialName, socialLink: input.value});
+		if(formData) {
+			isLoading.hidden = false;
+			try {
+				const clientData = await saveClientApi(formData);
+				if(clientData) {
+					deletePopUp(popUp);
+					tBody.append(createClientItem(clientData))
 				}
+			} catch (err) {
+				console.log(err);
+
+				isLoading.hidden = true;
+				isError.textContent = err.message;
+				isError.hidden = false;
+
+				setTimeout(() => {
+					isError.hidden = true;
+				}, 3000)
 			}
-		});
-
-		formData.contacts = contacts;
-
-		fetch('/clients', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify(formData),
-		}); */
+		}
 	}
 
 	// Delete pop-up window

@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 
 const subSchema = mongoose.Schema({
+	socialType: String,
 	socialName: String,
 	socialLink: String
 }, {_id: false})

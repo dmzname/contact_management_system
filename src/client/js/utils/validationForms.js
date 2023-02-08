@@ -23,7 +23,7 @@ const validationParams = {
 	},
 	password: {
 		regExp: /^.{6}$/,
-		msg: 'Введено не достаточное количество символов',
+		msg: 'Короткий пароль',
 	},
 	'confirm-password': {
 		regExp: /^.{6}/,
@@ -39,38 +39,49 @@ const validationParams = {
 	}
 };
 
-export function isFormValid(form) {
-	let isValid = true, password, formData = {};
+export function isFormValid(inputs) {
+	let isValid = true, formData = {}, contacts = [];
 
-	const inputs = [...form.elements].filter((el) => el.nodeName === 'INPUT');
-	if(form.name === 'signup') {
-		password = inputs.find((el) => el.name === 'password').value.trim();
-	}
+	const password = inputs.find((el) => el.name === 'password')?.value.trim();
 
-	form.addEventListener('input', (e) => {
-		if (e.target.dataset.valid && validationParams[e.target.dataset.valid].regExp.test(e.target.value.trim())) {
-			removeError(e.target);
-		}
+	inputs.forEach(el => {
+		el.addEventListener('input', (e) => {
+			if (e.target.dataset.valid && validationParams[e.target.dataset.valid].regExp.test(e.target.value.trim())) {
+				removeError(e.target);
+			}
+		});
 	});
 
-	inputs.forEach((input) => {
+	inputs.forEach((input, index) => {
 		const value = input.value.trim();
 		const { valid } = input.dataset;
 
 		if(valid) {
-			const errMsg = !value && input.required ? 'Поле обязательно для заполнения' : validationParams[valid].msg;
+			const errMsg = !value && input.required ? 'Обязательное поле' : validationParams[valid].msg;
 
-		if ((value === '' && input.required) || !validationParams[valid].regExp.test(value)) {
-			showError(input, errMsg);
-			isValid = false;
-		} else {
-			formData = { ...formData, [input.name]: value };
+			if ((value === '' && input.required) || !validationParams[valid].regExp.test(value)) {
+				showError(input, errMsg);
+				isValid = false;
+			} else {
+				if(input.classList.contains('contact-field__input')) {
+					contacts.push({
+							socialType: input.name,
+							socialName: inputs[index - 1].value,
+							socialLink: value
+					})
+				} else {
+					formData = { ...formData, [input.name]: value };
+				}
+				if(input.closest('.form_clients')) {
+					formData.contacts = [...contacts];
+				}
+			}
+
+			if (name === 'confirm-password' && value !== password) {
+				showError(input, errMsg);
+				isValid = false;
+			}
 		}
-
-		if (name === 'confirm-password' && value !== password) {
-			showError(input, errMsg);
-			isValid = false;
-		}}
 	});
 
 	if (isValid) return formData;
