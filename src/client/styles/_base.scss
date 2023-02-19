@@ -17,6 +17,12 @@ body {
 	color: var(--text-color);
 }
 
+.overlay {
+	position: fixed;
+	inset: 0 0 0 0;
+	padding-top: vw(150);
+}
+
 button {
 	padding: 0;
 	border: none;

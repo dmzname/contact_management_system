@@ -11,9 +11,7 @@
 
 	&__title {
 		padding: 0 vw(25);
-		margin-bottom: vw(15);
-		display: flex;
-		align-items: flex-end;
+		margin: 0 0 vw(25);
 		font-size: vw(18);
 		font-weight: 700;
 
@@ -82,7 +80,8 @@
 		line-height: vw(20);
 	}
 
-	&__isLoading, &__isError {
+	&__isLoading,
+	&__isError {
 		position: absolute;
 		inset: 0 0 0 0;
 		z-index: 3;
@@ -90,7 +89,7 @@
 	}
 
 	&__isLoading {
-		background-image: url("../assets/images/spinner.svg");
+		background-image: url('../assets/images/spinner.svg');
 		background-repeat: no-repeat;
 		background-position: center center;
 		background-size: vw(50) vw(50);
@@ -104,5 +103,16 @@
 		color: var(--red);
 		text-align: center;
 		line-height: 1.7;
+	}
+
+	&__confirm-msg {
+		margin: auto auto vw(25);
+		max-width: vw(275);
+		text-align: center;
+		line-height: 1.5;
+	}
+
+	&__remove-btn {
+		margin-bottom: vw(25);
 	}
 }

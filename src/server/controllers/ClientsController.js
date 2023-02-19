@@ -9,7 +9,7 @@ export const addClient = async (req, res) => {
 			surname: req.body.surname,
 			midname: req.body.midname,
 			contacts: req.body.contacts,
-			user: req.user
+			user: req.user,
 		});
 
 		const client = await doc.save();
@@ -27,5 +27,15 @@ export const getAllClients = async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ message: 'Ошибка сервера.' });
+	}
+};
+
+export const removeClient = async (req, res) => {
+	try {
+		await ClientModel.findOneAndDelete({ clientId: req.params.id });
+		res.status(201).json({ message: 'success' });
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ message: err.message });
 	}
 };

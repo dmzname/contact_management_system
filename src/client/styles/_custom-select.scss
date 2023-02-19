@@ -22,6 +22,7 @@
 			outline: vw(2) solid var(--firm);
 		}
 
+		//noinspection ALL
 		&::after {
 			content: '';
 			position: absolute;

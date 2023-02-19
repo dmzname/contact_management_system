@@ -1,50 +1,36 @@
 import { el } from 'redom';
-import { inputFormHover } from '../../utils/index.js';
-import { createPopUpForm } from './createPopUpForm.js';
-import { popUpListener, popUpTabindexController } from './popUpListener.js';
+import { popUpListener } from './popUpListener.js';
+import { createTitlePopUp } from './views/createTitlePopUp';
+import { createContentPopUp } from './views/content-popUp/createContentPopUp';
+import { TabindexController } from '../../classes/TabindexController';
 
-const ADD_FORM_TITLE = 'Новый клиент';
-const DEL_FORM_TITLE = 'Удалить клиента';
-const CHANGE_FORM_TITLE = 'Изменить данные';
+export const popUpTabindexController = new TabindexController(document);
 
 export function createPopUp(event) {
-	const { target } = event;
-	if (document.body.querySelector('.pop-up')) return;
+  if (document.body.querySelector('.pop-up')) return;
+  window.__contactCount = 0;
 
-	const form = createPopUpForm();
+  const dataAction = event.target.dataset.action;
+  createPopUp.item = event.target.closest('.clients-list__row');
 
-	window.__contactCount = 0;
-	const dataAction = target.dataset.action;
+  const popUpOverlay = el(
+    '.pop-up',
+    { 'data-close': '' },
+    el('.pop-up__content', [
+      createTitlePopUp(dataAction),
+      createContentPopUp(dataAction),
+      el('button.btn-reset', { 'data-close': '' }, 'Отмена'),
+      el('button.pop-up__close', { 'data-close': '', type: 'button' }),
+      el('.pop-up__isLoading', { hidden: true }),
+      el('.pop-up__isError', { hidden: true }),
+    ]),
+  );
 
-	function checkTitle(title) {
-		const titles = {
-			add: ADD_FORM_TITLE,
-			change: `${CHANGE_FORM_TITLE}<span> ID: 1111</span>`,
-			delete: DEL_FORM_TITLE,
-		};
+  popUpTabindexController.removeFocus(popUpOverlay);
 
-		title.textContent = titles[dataAction]; // eslint-disable-line no-param-reassign
-		return title;
-	}
+  document.body.append(popUpOverlay);
 
-	popUpTabindexController.removeFocus(form);
-	inputFormHover(form);
-
-	const popUpOverlay = el(
-		'.pop-up',
-		{ 'data-close': '' },
-		el('.pop-up__content', [
-			el('h3.pop-up__title', checkTitle),
-			form,
-			el('button.pop-up__close', { 'data-close': '', type: 'button' }),
-			el('.pop-up__isLoading', {hidden: true}),
-			el('.pop-up__isError', {hidden: true})
-		]),
-	);
-
-	document.body.append(popUpOverlay);
-
-	popUpOverlay.addEventListener('click', popUpListener);
-	popUpOverlay.addEventListener('input', popUpListener);
-	popUpOverlay.addEventListener('submit', popUpListener);
+  popUpOverlay.addEventListener('click', popUpListener);
+  popUpOverlay.addEventListener('input', popUpListener);
+  popUpOverlay.addEventListener('submit', popUpListener);
 }

@@ -7,9 +7,14 @@ export default (target) => {
 
 	const contactField = el('.contact-field.field', [
 		el('div.contact-field__wrapper', [
-			el('input.contact-field__input', { type: 'text', name: 'phone', 'data-valid': 'phone', required: true }),
-				el('label', '+x (xxx) xxx-xx-xx'),
-				el('small')
+			el('input.contact-field__input', {
+				type: 'text',
+				name: 'phone',
+				'data-valid': 'phone',
+				required: true,
+			}),
+			el('label', '+x (xxx) xxx-xx-xx'),
+			el('small'),
 		]),
 		el(
 			'button.contact-field__del-btn',

@@ -1,37 +1,37 @@
 import { el } from 'redom';
-import { createAddOtherContactForm } from '../pop-up/createAddOtherContactForm.js';
-import { focusedElement } from "../../utils";
+import { createAddOtherContactForm } from '../add-contacts/createAddOtherContactForm.js';
+import { focusedElement } from '../../../../utils';
 
 const options = {
 	phone: {
 		text: 'Телефон',
 		valid: 'phone',
-		label: '+x (xxx) xxx-xx-xx'
+		label: '+x (xxx) xxx-xx-xx',
 	},
 	extPhone: {
 		text: 'Доп. телефон',
 		valid: 'phone',
-		label: '+x (xxx) xxx-xx-xx'
+		label: '+x (xxx) xxx-xx-xx',
 	},
 	email: {
-		text:  'Email',
+		text: 'Email',
 		valid: 'email',
-		label: 'Введите Ваш е-mail'
+		label: 'Введите Ваш е-mail',
 	},
 	facebook: {
-		text:  'Facebook',
+		text: 'Facebook',
 		valid: 'link',
-		label: 'Ex.: https://facebook.com'
+		label: 'Ex.: https://facebook.com',
 	},
 	vk: {
-		text:  'Vkontakte',
+		text: 'Vkontakte',
 		valid: 'link',
-		label: 'Ex.: https://vk.com'
+		label: 'Ex.: https://vk.com',
 	},
 	other: {
-		text:  'Другое',
+		text: 'Другое',
 		valid: 'link',
-		label: ''
+		label: '',
 	},
 };
 
@@ -46,8 +46,6 @@ export function closingSelectOptions(event) {
 		});
 	}
 }
-
-document.addEventListener('click', closingSelectOptions);
 
 // Select options action
 let count = 0;
@@ -102,7 +100,10 @@ export function selectActions(event) {
 		count = 0;
 	}
 
-	if (target.dataset.value === 'other' && (code === 'Enter' || code === 'Space' || type === 'click')) {
+	if (
+		target.dataset.value === 'other' &&
+		(code === 'Enter' || code === 'Space' || type === 'click')
+	) {
 		const form = document.querySelector('.form_clients');
 		this.classList.remove('active');
 		const contactField = target.closest('.contact-field');
@@ -122,9 +123,10 @@ export default () => {
 				),
 			),
 		]),
-		el('input.custom-select__input', {type: 'hidden', name: 'select', value: 'Телефон' })
+		el('input.custom-select__input', { type: 'hidden', name: 'select', value: 'Телефон' }),
 	]);
 
+	document.addEventListener('click', closingSelectOptions);
 	select.addEventListener('click', selectActions);
 	select.addEventListener('keydown', selectActions);
 

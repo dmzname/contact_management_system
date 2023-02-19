@@ -1,10 +1,12 @@
+//noinspection ALL
 .main {
 	padding: vw(40) vw(90);
 	height: calc(100vh - vw(90));
+
 	&__title {
 		margin-bottom: vw(35);
 		font-size: vw(36);
-		letter-spacing: .02em;
+		letter-spacing: 0.02em;
 	}
 
 	&__btn {
@@ -16,6 +18,7 @@
 		background-color: transparent;
 		border: vw(2) solid var(--firm);
 		color: var(--firm);
+
 		&::before {
 			content: '';
 			margin-right: vw(10);

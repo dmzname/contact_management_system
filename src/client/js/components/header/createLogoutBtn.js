@@ -1,5 +1,5 @@
 import { el } from 'redom';
-import { userLogout } from '../../api/userAuthorization.js';
+import { userLogout } from '../auth/api/userLogout';
 
 export function createLogoutBtn() {
 	const btn = el('button.logout-btn', { type: 'button' }, 'Выйти');
@@ -7,4 +7,4 @@ export function createLogoutBtn() {
 	btn.addEventListener('click', userLogout);
 
 	return btn;
-};
+}

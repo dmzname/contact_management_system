@@ -1,27 +1,27 @@
 import { el } from 'redom';
-import {focusedElement, isFormValid} from '../../utils/index.js';
-import { TabindexController } from '../../classes/TabindexController.js';
+import { focusedElement, isFormValid } from '../../../../utils';
+import { TabindexController } from '../../../../classes/TabindexController.js';
+import { addEventListener, removeEventListener } from '../../../../utils/eventListenersController';
 
-export function isShowPlaceholder (event) {
-		event.target.nextElementSibling.hidden = Boolean(event.target.value.length);
+export function isShowPlaceholder(event) {
+	event.target.nextElementSibling.hidden = Boolean(event.target.value.length);
 }
 
 function removeAddOtherContactForm(element, addOtherTabindexController) {
 	addOtherTabindexController.returnFocus();
 	element.remove();
-	element.removeEventListener('click', formOtherListener); // eslint-disable-line no-use-before-define
-	element.removeEventListener('keydown', formOtherListener); // eslint-disable-line no-use-before-define
+	removeEventListener(element, 'click');
+	removeEventListener(element, 'keydown');
 }
 
-export function formOtherListener([addOtherTabindexController], event) {
+function formOtherListener(addOtherTabindexController, event) {
 	const { type, target, code } = event;
 
 	const contactField = target.closest('.contact-field');
 	const selectBtn = contactField.querySelector('.custom-select__button');
 	const selectInput = contactField.querySelector('.custom-select__input');
 
-
-		contactField.addEventListener('input', isShowPlaceholder);
+	contactField.addEventListener('input', isShowPlaceholder);
 
 	if ((target.dataset.closeOther && type !== 'keydown') || code === 'Escape') {
 		removeAddOtherContactForm(this, addOtherTabindexController);
@@ -32,7 +32,6 @@ export function formOtherListener([addOtherTabindexController], event) {
 		(target.closest('.add-other__submit') && type !== 'keydown') ||
 		(code === 'Enter' && !target.dataset.closeOther)
 	) {
-
 		const inputSocialName = contactField.querySelector('input[name=socialName]');
 		const inputSocialLink = contactField.querySelector('input[name=socialLink]');
 		const contactInput = contactField.querySelector('.contact-field__input');
@@ -40,9 +39,7 @@ export function formOtherListener([addOtherTabindexController], event) {
 
 		const formData = isFormValid([inputSocialName, inputSocialLink]);
 
-
-
-		if(formData) {
+		if (formData) {
 			selectBtn.textContent = formData.socialName;
 			selectInput.value = formData.socialName;
 			contactInput.value = formData.socialLink;
@@ -63,14 +60,26 @@ export function createAddOtherContactForm(form) {
 		el('.add-other__wrapper', [
 			el('.add-other__inputs-group', [
 				el('div.add-other__field.field', [
-					el('input', (input) => focusedElement(input), { type: 'text', name: 'socialName', autoComplete: 'off', 'data-valid': 'text', required: true }),
+					el('input', (input) => focusedElement(input), {
+						type: 'text',
+						name: 'socialName',
+						autoComplete: 'off',
+						'data-valid': 'text',
+						required: true,
+					}),
 					el('label', 'Ex.: Telegram'),
-					el('small')
+					el('small'),
 				]),
 				el('div.add-other__field.field', [
-					el('input', { type: 'text', name: 'socialLink', autoComplete: 'off', 'data-valid': 'link', required: true }),
+					el('input', {
+						type: 'text',
+						name: 'socialLink',
+						autoComplete: 'off',
+						'data-valid': 'link',
+						required: true,
+					}),
 					el('label', 'Ex.: https://tg.me'),
-					el('small')
+					el('small'),
 				]),
 			]),
 			el('.add-other__btn-group', [
@@ -81,7 +90,11 @@ export function createAddOtherContactForm(form) {
 		]),
 	);
 	addOtherTabindexController.removeFocus(addOther);
-	addOther.addEventListener('click', formOtherListener.bind(addOther, [addOtherTabindexController]));
-	addOther.addEventListener('keydown', formOtherListener.bind(addOther, [addOtherTabindexController]));
+	addEventListener(addOther, 'click', formOtherListener.bind(addOther, addOtherTabindexController));
+	addEventListener(
+		addOther,
+		'keydown',
+		formOtherListener.bind(addOther, addOtherTabindexController),
+	);
 	return addOther;
 }

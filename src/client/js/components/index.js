@@ -1,14 +1,14 @@
-export * from './createHeader.js';
-export * from './svgLogo.js';
-export * from './createSearchInput.js';
+export * from './header/createHeader.js';
+export * from './header/svgLogo.js';
+export * from './header/createSearchInput.js';
 
-export * from './createTitle.js';
-export * from './createAddButton.js';
+export * from './body/createTitle.js';
+export * from './body/createAddButton.js';
 
-export * from './authorization/createLoginForm.js';
-export * from './authorization/createSignupForm.js';
-export * from './authorization/createLogoutBtn.js';
+export * from './auth/views/createLoginForm.js';
+export * from './auth/views/createSignupForm.js';
+export * from './header/createLogoutBtn.js';
 
-export * from './contentTable/createClientsList.js';
+export * from './body/content-table/view/createClientsList.js';
 
 export * from './pop-up/createPopUp.js';
