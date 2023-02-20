@@ -1,5 +1,3 @@
-import { createPopUp } from '../../pop-up/createPopUp';
-
 export function tableListener(event) {
   const { target } = event;
   const tHead = target.closest('.clients-list__head');
@@ -20,9 +18,5 @@ export function tableListener(event) {
 
     const tooltip = target.children[0];
     tooltip.hidden = !tooltip.hidden;
-  }
-
-  if (target.dataset.action) {
-    createPopUp.call(null, event);
   }
 }

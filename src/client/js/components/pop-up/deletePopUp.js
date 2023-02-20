@@ -1,9 +1,9 @@
 import { closingSelectOptions, selectActions } from './views/custom-select/createContactSelect.js';
-import { popUpListener } from './popUpListener';
 import { removeEventListener } from '../../utils/eventListenersController';
 import { popUpTabindexController } from './createPopUp';
 
-export function deletePopUp(popUp) {
+export function deletePopUp(popUp, event) {
+  if (event.type === 'keydown' && event.code !== 'Escape') return;
   const addOther = popUp.querySelector('.add-other');
   const selects = popUp.querySelectorAll('.custom-select');
 
@@ -11,9 +11,11 @@ export function deletePopUp(popUp) {
 
   popUpTabindexController.returnFocus();
 
-  popUp.removeEventListener('click', popUpListener);
-  popUp.removeEventListener('input', popUpListener);
-  popUp.removeEventListener('submit', popUpListener);
+  removeEventListener(popUp, 'click');
+  removeEventListener(popUp, 'input');
+  removeEventListener(popUp, 'submit');
+  removeEventListener(popUp, 'keydown');
+
   document.removeEventListener('click', closingSelectOptions);
 
   if (addOther) {

@@ -1,4 +1,5 @@
 import { el } from 'redom';
+import { focusedElement } from '../../../../utils';
 
 export function createRemoveConfirmation() {
   const confirmMsg = el(
@@ -7,6 +8,7 @@ export function createRemoveConfirmation() {
   );
   const removeBtn = el(
     'button.btn.pop-up__remove-btn',
+    (btn) => focusedElement(btn),
     { 'data-action': 'remove-client' },
     'Удалить',
   );

@@ -1,5 +1,4 @@
 export * from './header/createHeader.js';
-export * from './header/svgLogo.js';
 export * from './header/createSearchInput.js';
 
 export * from './body/createTitle.js';

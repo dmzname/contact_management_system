@@ -1,18 +1,17 @@
 import { el, setChildren } from 'redom';
-import { svgLogo } from './svgLogo.js';
 import { createSearchInput } from './createSearchInput';
 import { createLogoutBtn } from './createLogoutBtn';
+import logoUrl from '../../../assets/images/zd_logo.svg';
 
 export function createHeader() {
-	const searchInput = createSearchInput();
-	const logoutBtn = createLogoutBtn();
+  const searchInput = createSearchInput();
+  const logoutBtn = createLogoutBtn();
 
-	const header = el('header.header');
+  const header = el('header.header');
 
-	const logo = el('.header__logo');
-	logo.innerHTML = svgLogo();
+  const logo = el('.header__logo', el('img', { src: logoUrl, alt: 'Logo' }));
 
-	setChildren(header, [logo, searchInput, logoutBtn]);
+  setChildren(header, [logo, searchInput, logoutBtn]);
 
-	return header;
+  return header;
 }

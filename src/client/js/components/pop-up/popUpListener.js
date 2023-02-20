@@ -1,13 +1,13 @@
-import createContactInput from './views/add-contacts/createContactInput.js';
 import { deletePopUp } from './deletePopUp.js';
 import { selectActions } from './views/custom-select/createContactSelect.js';
 import { calcMargin, getInputsNode, isFormValid } from '../../utils';
 import { isShowPlaceholder } from './views/add-contacts/createAddOtherContactForm';
 import { apiSaveClient } from '../../api/apiSaveClient';
 import { createClientItem } from '../body/content-table/view/createClientItem';
-import { createPopUp } from './createPopUp';
 import { apiRemoveClient } from '../../api/apiRemoveClient';
 import { createTableMessage } from '../body/content-table/view/createTableMessage';
+import { removeClientItem } from '../body/content-table/removeClientItem';
+import { createContactInput } from './views/add-contacts/createContactInput';
 
 let countContacts = 0;
 
@@ -20,13 +20,14 @@ export async function popUpListener(event) {
   const isLoading = popUp.querySelector('.pop-up__isLoading');
   const isError = popUp.querySelector('.pop-up__isError');
   const tBody = document.querySelector('.clients-list__body');
+  const contactsBlock = document.querySelector('.add-contact__wrapper');
 
   // Add client contacts field
   if (target.dataset.action === 'add-contact') {
     if (++countContacts === 10) {
       addContactBtn.disabled = true;
     }
-    createContactInput(target);
+    contactsBlock.append(createContactInput());
   }
 
   // Delete client contacts field
@@ -63,7 +64,7 @@ export async function popUpListener(event) {
             tBody.innerHTML = '';
             tBody.classList.remove('isEmpty');
           }
-          deletePopUp(popUp);
+          deletePopUp(popUp, event);
           tBody.append(createClientItem(clientData));
           calcMargin();
         }
@@ -83,16 +84,18 @@ export async function popUpListener(event) {
 
   // Remove Client
   if (target.dataset.action === 'remove-client') {
-    const itemRow = createPopUp.item;
-    const id = itemRow.firstChild.textContent;
-
+    console.log('REMOVE');
     isLoading.hidden = false;
-    apiRemoveClient(id)
+    apiRemoveClient(this.id)
       .then(() => {
-        itemRow.remove();
-        tBody.childNodes.length === 0 && tBody.append(createTableMessage());
-        deletePopUp(popUp);
-        delete createPopUp.item;
+        removeClientItem(this.rowItem);
+
+        if (tBody.childNodes.length === 0) {
+          tBody.append(createTableMessage());
+          tBody.classList.add('isEmpty');
+        }
+
+        deletePopUp(popUp, event);
       })
       .catch((err) => {
         console.log(err);
@@ -110,6 +113,6 @@ export async function popUpListener(event) {
   // Delete pop-up window
   if (target.hasAttribute('data-close')) {
     countContacts = 0;
-    deletePopUp(popUp);
+    deletePopUp(popUp, event);
   }
 }
