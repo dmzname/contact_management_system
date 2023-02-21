@@ -52,20 +52,35 @@ export async function popUpListener(event) {
 
   // Save form data
   if (target.dataset.action === 'save') {
-    const form = document.forms.add;
+    const form = document.forms.clientData;
     const formData = isFormValid(getInputsNode(form));
+    const formAction = form.dataset.formAction;
+
+    const method = {
+      add: 'POST',
+      update: 'PUT',
+    };
+
+    if (formAction === 'update') {
+      formData.clientId = this.clientId;
+    }
 
     if (formData) {
       isLoading.hidden = false;
       try {
-        const clientData = await apiSaveClient(formData);
+        console.log(formData);
+        const clientData = await apiSaveClient(formData, method[formAction]);
         if (clientData) {
           if (tBody.closest('.isEmpty')) {
             tBody.innerHTML = '';
             tBody.classList.remove('isEmpty');
           }
           deletePopUp(popUp, event);
-          tBody.append(createClientItem(clientData));
+
+          formAction === 'update'
+            ? tBody.replaceChild(createClientItem(clientData), this.rowItem)
+            : tBody.append(createClientItem(clientData));
+
           calcMargin();
         }
       } catch (err) {
@@ -84,7 +99,6 @@ export async function popUpListener(event) {
 
   // Remove Client
   if (target.dataset.action === 'remove-client') {
-    console.log('REMOVE');
     isLoading.hidden = false;
     apiRemoveClient(this.id)
       .then(() => {
